@@ -19,15 +19,10 @@
 import Dashboard from '@material-ui/icons/Dashboard'
 import Person from '@material-ui/icons/Person'
 import Dehaze from '@material-ui/icons/Dehaze'
-import BubbleChart from '@material-ui/icons/BubbleChart'
-import LocationOn from '@material-ui/icons/LocationOn'
-import Notifications from '@material-ui/icons/Notifications'
-import Unarchive from '@material-ui/icons/Unarchive'
-import Language from '@material-ui/icons/Language'
 // core components/views for Admin layout
 import DashboardPage from './pages/Dashboard/Dashboard'
-import UserProfile from './pages/UserProfile/UserProfile.js'
 import ServiceType from './pages/ServiceType/ServiceType'
+import UserList from './pages/UserList'
 
 const dashboardRoutes = [
   // {
@@ -42,6 +37,13 @@ const dashboardRoutes = [
     name: 'Tipos de Servicio',
     icon: Dehaze,
     component: ServiceType,
+    layout: '/admin',
+  },
+  {
+    path: '/users',
+    name: 'Usuarios',
+    icon: Person,
+    component: UserList,
     layout: '/admin',
   },
   // {

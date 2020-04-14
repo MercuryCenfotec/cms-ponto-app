@@ -1,5 +1,6 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
+import { IconButton } from '@material-ui/core'
 import InputLabel from '@material-ui/core/InputLabel'
 import GridItem from '../../components/Grid/GridItem.js'
 import GridContainer from '../../components/Grid/GridContainer.js'
@@ -10,9 +11,9 @@ import CardHeader from '../../components/Card/CardHeader.js'
 import CardBody from '../../components/Card/CardBody.js'
 import CardFooter from '../../components/Card/CardFooter.js'
 import CloudUploadIcon from '@material-ui/icons/CloudUpload'
-import { useAlert } from '../../hooks/useAlert.js'
+import Create from '@material-ui/icons/Create'
 import Table from '../../components/Table/Table.js'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useAllServiceTypes } from '../../hooks/useServiceType.js'
 
 const styles = {
@@ -37,15 +38,20 @@ const styles = {
 const useStyles = makeStyles(styles)
 
 export default function ServiceTypes(props) {
+  const [isUpdating, setIsUpdating] = useState(false)
   const [isReady, setIsReady] = useState(false)
-  const { show, hide } = useAlert()
   const [isImage, setIsImage] = useState(false)
   const [serviceType, setServiceType] = useState({
-    color: '#FFF',
-    name: '',
+    color: '#000',
+    serviceType: '',
   })
+  const [image, setImage] = useState('')
+  const [list, setList] = useState([])
   const { serviceTypes } = useAllServiceTypes()
-  console.log(serviceTypes)
+
+  const manageEdit = (id) => {
+    console.log(id)
+  }
 
   const colorOnChange = (props) => (e) => {
     let value = e.target.value
@@ -65,7 +71,7 @@ export default function ServiceTypes(props) {
     if (
       serviceType.color.length > 3 &&
       serviceType.color.length < 8 &&
-      serviceType.name.length > 2 &&
+      serviceType.serviceType.length > 2 &&
       isImage
     ) {
       setIsReady(true)
@@ -74,9 +80,54 @@ export default function ServiceTypes(props) {
     }
   }
 
-  const setNofication = () => {
-    show(true, 'test')
+  const imageOnChange = (e) => {
+    let file = new FileReader()
+    let url
+    file.onload = function () {
+      url = file.result
+      setImage(url)
+    }
+    file.readAsDataURL(e.target.files[0])
   }
+
+  useEffect(() => {
+    let newList = []
+
+    newList = serviceTypes.map((value) => {
+      return [
+        value.serviceType,
+
+        <GridContainer justify='center'>
+          <GridItem justify='center'>
+            <img
+              src={value.imgUrl}
+              alt={value.serviceType}
+              className='preview-image'
+            />
+          </GridItem>
+        </GridContainer>,
+        value.color,
+        <GridItem
+          style={{
+            background: value.color,
+            color: value.color,
+            border: '2px solid #000',
+          }}
+        >
+          _
+        </GridItem>,
+        <IconButton
+          color='primary'
+          aria-label='add to shopping cart'
+          onClick={() => manageEdit(value.id)}
+        >
+          <Create />
+        </IconButton>,
+      ]
+    })
+    setList(newList)
+  }, [serviceTypes])
+
   const classes = useStyles()
   return (
     <div>
@@ -94,13 +145,13 @@ export default function ServiceTypes(props) {
                 <GridItem xs={12} sm={12} md={6}>
                   <CustomInput
                     labelText='Nombre'
-                    id='first-name'
+                    id='Nombre'
                     formControlProps={{
                       fullWidth: true,
                     }}
                     inputProps={{
-                      value: serviceType.name,
-                      onChange: colorOnChange('name'),
+                      value: serviceType.serviceType,
+                      onChange: colorOnChange('serviceType'),
                     }}
                   />
                 </GridItem>
@@ -126,6 +177,8 @@ export default function ServiceTypes(props) {
                     id='contained-button-file'
                     type='file'
                     hidden
+                    value={image}
+                    onChange={imageOnChange}
                   />
                   <label htmlFor='contained-button-file'>
                     <Button
@@ -146,9 +199,10 @@ export default function ServiceTypes(props) {
                     style={{
                       background: serviceType.color,
                       color: serviceType.color,
+                      border: '2px solid #000',
                     }}
                   >
-                    o
+                    <img src={image} className='preview-image-form' />_
                   </GridItem>
                 </GridItem>
               </GridContainer>
@@ -158,9 +212,9 @@ export default function ServiceTypes(props) {
                 <Button
                   disabled={!isReady}
                   color='primary'
-                  onClick={() => setNofication()}
+                  // onClick={}
                 >
-                  Ingresar
+                  Confirmar
                 </Button>
               </GridItem>
             </CardFooter>
@@ -169,21 +223,26 @@ export default function ServiceTypes(props) {
         <GridItem xs={12} sm={12} md={10}>
           <Card>
             <CardHeader color='primary'>
-              <h4 className={classes.cardTitleWhite}>Simple Table</h4>
+              <h4 className={classes.cardTitleWhite}>Tipos de Servicio</h4>
               <p className={classes.cardCategoryWhite}>
-                Here is a subtitle for this table
+                Todos los tipos de servicio registrados en la aplicacion.
               </p>
             </CardHeader>
             <CardBody>
-              {serviceTypes && (
+              {list && (
                 <Table
                   tableHeaderColor='primary'
-                  tableHead={['Nombre', 'Color']}
-                  tableData={[
-                    serviceTypes.map((value) => {
-                      return [value.serviceType, value.color]
-                    }),
+                  tableHead={[
+                    'Nombre',
+
+                    <GridContainer justify='center'>
+                      <GridItem justify='center'>{'Imagen'}</GridItem>
+                    </GridContainer>,
+                    'Color',
+                    'Vista Previa',
+                    '',
                   ]}
+                  tableData={list}
                 />
               )}
             </CardBody>
