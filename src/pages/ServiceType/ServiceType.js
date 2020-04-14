@@ -64,6 +64,7 @@ export default function ServiceTypes(props) {
           setServiceType({ ...serviceType, [props]: value })
         }
         break
+        break
       default:
         setServiceType({ ...serviceType, [props]: value })
         break

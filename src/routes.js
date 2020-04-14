@@ -19,10 +19,17 @@
 import Dashboard from '@material-ui/icons/Dashboard'
 import Person from '@material-ui/icons/Person'
 import Dehaze from '@material-ui/icons/Dehaze'
+import CardMembership from '@material-ui/icons/CardMembership'
+import BubbleChart from '@material-ui/icons/BubbleChart'
+import LocationOn from '@material-ui/icons/LocationOn'
+import Notifications from '@material-ui/icons/Notifications'
+import Unarchive from '@material-ui/icons/Unarchive'
+import Language from '@material-ui/icons/Language'
 // core components/views for Admin layout
 import DashboardPage from './pages/Dashboard/Dashboard'
 import ServiceType from './pages/ServiceType/ServiceType'
 import UserList from './pages/UserList'
+import Membership from './pages/Membership'
 
 const dashboardRoutes = [
   // {
@@ -44,6 +51,13 @@ const dashboardRoutes = [
     name: 'Usuarios',
     icon: Person,
     component: UserList,
+    layout: '/admin',
+  },
+  {
+    path: '/membership',
+    name: 'Membresías',
+    icon: CardMembership,
+    component: Membership,
     layout: '/admin',
   },
   // {
