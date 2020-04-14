@@ -19,6 +19,7 @@
 import Dashboard from '@material-ui/icons/Dashboard'
 import Person from '@material-ui/icons/Person'
 import Dehaze from '@material-ui/icons/Dehaze'
+import CardMembership from '@material-ui/icons/CardMembership'
 import BubbleChart from '@material-ui/icons/BubbleChart'
 import LocationOn from '@material-ui/icons/LocationOn'
 import Notifications from '@material-ui/icons/Notifications'
@@ -28,6 +29,7 @@ import Language from '@material-ui/icons/Language'
 import DashboardPage from './pages/Dashboard/Dashboard'
 import UserProfile from './pages/UserProfile/UserProfile.js'
 import ServiceType from './pages/ServiceType/ServiceType'
+import Membership from './pages/Membership'
 
 const dashboardRoutes = [
   // {
@@ -42,6 +44,13 @@ const dashboardRoutes = [
     name: 'Tipos de Servicio',
     icon: Dehaze,
     component: ServiceType,
+    layout: '/admin',
+  },
+  {
+    path: '/membership',
+    name: 'Membresías',
+    icon: CardMembership,
+    component: Membership,
     layout: '/admin',
   },
   // {
