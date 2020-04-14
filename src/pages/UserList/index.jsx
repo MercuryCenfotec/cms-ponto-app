@@ -1,19 +1,15 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
-import InputLabel from '@material-ui/core/InputLabel'
 import GridItem from '../../components/Grid/GridItem.js'
 import GridContainer from '../../components/Grid/GridContainer.js'
-import CustomInput from '../../components/CustomInput/CustomInput.js'
-import Button from '../../components/CustomButtons/Button.js'
 import Card from '../../components/Card/Card.js'
 import CardHeader from '../../components/Card/CardHeader.js'
 import CardBody from '../../components/Card/CardBody.js'
-import CardFooter from '../../components/Card/CardFooter.js'
-import CloudUploadIcon from '@material-ui/icons/CloudUpload'
 import Table from '../../components/Table/Table.js'
 import { useState, useEffect } from 'react'
-import { useAllServiceTypes } from '../../hooks/useServiceType.js'
 import { useAllUsers } from '../../hooks/useUser.js'
+import { InputAdornment, Input } from '@material-ui/core'
+import SearchIcon from '@material-ui/icons/Search'
 
 const styles = {
   cardCategoryWhite: {
@@ -38,7 +34,24 @@ const useStyles = makeStyles(styles)
 
 export default function UserList(props) {
   const [list, setList] = useState([])
-  const { users } = useAllUsers()
+  const { users, isReload } = useAllUsers()
+  const [search, setSearch] = useState('')
+
+  const handleSearch = () => (e) => {
+    let searchValue = e.target.value
+    setSearch(searchValue)
+    if (searchValue.length > 0 || searchValue !== '') {
+      let newList = []
+      list.forEach((value) => {
+        if (value[1].includes(searchValue)) {
+          newList.push(value)
+        }
+      })
+      setList(newList)
+    } else {
+      isReload()
+    }
+  }
   useEffect(() => {
     let newList = []
     console.log(users)
@@ -70,6 +83,21 @@ export default function UserList(props) {
               </p>
             </CardHeader>
             <CardBody>
+              <GridContainer justify='flex-start'>
+                <GridItem xs={12} sm={12} md={5}>
+                  <Input
+                    placeholder='Buscar...'
+                    value={search}
+                    onChange={handleSearch()}
+                    fullWidth
+                    startAdornment={
+                      <InputAdornment position='start'>
+                        <SearchIcon />
+                      </InputAdornment>
+                    }
+                  />
+                </GridItem>
+              </GridContainer>
               {list && (
                 <Table
                   tableHeaderColor='primary'

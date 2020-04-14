@@ -1,7 +1,11 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
-import { IconButton } from '@material-ui/core'
-import InputLabel from '@material-ui/core/InputLabel'
+import {
+  IconButton,
+  InputAdornment,
+  Input,
+  InputLabel,
+} from '@material-ui/core'
 import GridItem from '../../components/Grid/GridItem.js'
 import GridContainer from '../../components/Grid/GridContainer.js'
 import CustomInput from '../../components/CustomInput/CustomInput.js'
@@ -13,6 +17,7 @@ import CardFooter from '../../components/Card/CardFooter.js'
 import CloudUploadIcon from '@material-ui/icons/CloudUpload'
 import Create from '@material-ui/icons/Create'
 import Table from '../../components/Table/Table.js'
+import SearchIcon from '@material-ui/icons/Search'
 import { useState, useEffect } from 'react'
 import { useAllServiceTypes } from '../../hooks/useServiceType.js'
 
@@ -39,6 +44,7 @@ const useStyles = makeStyles(styles)
 
 export default function ServiceTypes(props) {
   const [isUpdating, setIsUpdating] = useState(false)
+  const [search, setSearch] = useState('')
   const [isReady, setIsReady] = useState(false)
   const [isImage, setIsImage] = useState(false)
   const [serviceType, setServiceType] = useState({
@@ -47,10 +53,27 @@ export default function ServiceTypes(props) {
   })
   const [image, setImage] = useState('')
   const [list, setList] = useState([])
-  const { serviceTypes } = useAllServiceTypes()
+  const { serviceTypes, isReload } = useAllServiceTypes()
 
   const manageEdit = (id) => {
     console.log(id)
+  }
+
+  const handleSearch = () => (e) => {
+    let searchValue = e.target.value
+    setSearch(searchValue)
+    if (searchValue.length > 0 || searchValue !== '') {
+      let newList = []
+      list.forEach((value) => {
+        console.log(value[0])
+        if (value[0].includes(searchValue)) {
+          newList.push(value)
+        }
+      })
+      setList(newList)
+    } else {
+      isReload()
+    }
   }
 
   const colorOnChange = (props) => (e) => {
@@ -141,6 +164,7 @@ export default function ServiceTypes(props) {
                 Ingrese la informacion de un nuevo tipo de servicio
               </p>
             </CardHeader>
+
             <CardBody>
               <GridContainer>
                 <GridItem xs={12} sm={12} md={6}>
@@ -230,6 +254,21 @@ export default function ServiceTypes(props) {
               </p>
             </CardHeader>
             <CardBody>
+              <GridContainer justify='flex-start'>
+                <GridItem xs={12} sm={12} md={5}>
+                  <Input
+                    placeholder='Buscar...'
+                    value={search}
+                    onChange={handleSearch()}
+                    fullWidth
+                    startAdornment={
+                      <InputAdornment position='start'>
+                        <SearchIcon />
+                      </InputAdornment>
+                    }
+                  />
+                </GridItem>
+              </GridContainer>
               {list && (
                 <Table
                   tableHeaderColor='primary'

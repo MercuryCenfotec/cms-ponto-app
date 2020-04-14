@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 
 export const useAllUsers = () => {
   const [users, setUsers] = useState([])
+  const [reload, setReload] = useState(false)
 
   useEffect(() => {
     try {
@@ -16,9 +17,13 @@ export const useAllUsers = () => {
     } catch (error) {
       console.log(error)
     }
-  }, [])
+    setReload(false)
+  }, [reload])
 
   return {
     users,
+    isReload: () => {
+      setReload(true)
+    },
   }
 }
