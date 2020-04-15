@@ -7,8 +7,7 @@ import Card from '../../components/Card/Card.js';
 import CardHeader from '../../components/Card/CardHeader.js';
 import CardBody from '../../components/Card/CardBody.js';
 import CardFooter from '../../components/Card/CardFooter.js';
-import InputLabel from '@material-ui/core/InputLabel';
-import Grid from '@material-ui/core/Grid';
+import IconButton from '@material-ui/core/IconButton';
 import AddIcon from '@material-ui/icons/Add';
 import DotIcon from '@material-ui/icons/FiberManualRecord';
 import CreateIcon from '@material-ui/icons/Create';
@@ -81,7 +80,7 @@ const styles = {
         marginLeft: '1.7rem',
     },
     tableCellMarginIcon: {
-        marginLeft: '1rem',
+        marginLeft: '0.5rem',
     },
 };
 const useStyles = makeStyles(styles);
@@ -99,19 +98,29 @@ export default function Membership() {
     const [membershipBenefits, setMembershipBenefits] = useState([]);
     const { memberships, setReload } = useMemberships();
     const [list, setList] = useState([]);
+
     useEffect(() => {
         let newList = [];
         newList = memberships.map((membership) => {
             return [
                 membership.name,
-                membership.price,
+                <NumberFormat
+                    value={membership.price}
+                    thousandSeparator
+                    isNumericString
+                    displayType='text'
+                    prefix='₡'
+                ></NumberFormat>,
                 <span className={classes.tableCellMargin}>
                     {membership.benefits.length}
                 </span>,
-                <CreateIcon
+                <IconButton
+                    color='primary'
                     className={classes.tableCellMarginIcon}
                     onClick={() => handleEdit(membership)}
-                />,
+                >
+                    <CreateIcon />
+                </IconButton>,
             ];
         });
         setList(newList);
