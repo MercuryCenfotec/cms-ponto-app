@@ -72,7 +72,7 @@ body {
 
 blockquote footer:before,
 blockquote small:before {
-  content: "\2014 \00A0";
+  content: '\2014 \00A0';
 }
 
 small {
@@ -127,7 +127,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
   font-weight: 300;
   line-height: 1.5em;
 }
@@ -135,6 +135,14 @@ h6 {
 a {
   color: #9c27b0;
   text-decoration: none;
+}
+
+.preview-image {
+  height: 2rem;
+}
+
+.preview-image-form {
+  height: 2rem;
 }
 
 a:hover,
@@ -162,11 +170,11 @@ button:active,
 button:focus,
 button:hover,
 button::-moz-focus-inner,
-input[type="reset"]::-moz-focus-inner,
-input[type="button"]::-moz-focus-inner,
-input[type="submit"]::-moz-focus-inner,
+input[type='reset']::-moz-focus-inner,
+input[type='button']::-moz-focus-inner,
+input[type='submit']::-moz-focus-inner,
 select::-moz-focus-inner,
-input[type="file"] > input[type="button"]::-moz-focus-inner {
+input[type='file'] > input[type='button']::-moz-focus-inner {
   outline: 0 !important;
 }
 
@@ -233,13 +241,13 @@ footer ul li a:hover {
     top: 0;
     left: auto;
     right: 260px;
-    content: "";
+    content: '';
     z-index: 9999;
     overflow-x: hidden;
   }
 }
 .fixed-plugin {
-  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
   font-weight: 300;
   line-height: 1.5em;
   position: fixed;
@@ -476,26 +484,11 @@ footer ul li a:hover {
 
 .fixed-plugin .dropdown .dropdown-menu:before,
 .fixed-plugin .dropdown .dropdown-menu:after {
-  content: "";
-  display: inline-block;
-  position: absolute;
-  top: 46px;
-  width: 16px;
-  transform: translateY(-50%);
-  -webkit-transform: translateY(-50%);
-  -moz-transform: translateY(-50%);
+  content: '';
 }
-
-.fixed-plugin .dropdown.show .dropdown-menu {
-  display: block;
-  visibility: visible;
-  opacity: 1;
-  -webkit-transform: translateY(-13%);
-  -moz-transform: translateY(-13%);
-  -o-transform: translateY(-13%);
-  -ms-transform: translateY(-13%);
-  transform: translateY(-13%);
-  transform-origin: 0 0;
+own-menu:before,
+.fixed-plugin .dropdown .dropdown-menu:after {
+  content: '';
 }
 .fixed-plugin.rtl-fixed-plugin {
   right: auto;
