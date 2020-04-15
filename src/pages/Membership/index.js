@@ -128,6 +128,17 @@ export default function Membership() {
         );
     };
 
+    const validateForm = () => {
+        console.log('hello');
+        setValidForm(
+            formValues.name !== '' &&
+                formValues.price !== '' &&
+                membershipBenefits.length !== 0
+                ? true
+                : false
+        );
+    };
+
     const handleSubmit = () => {
         if (validForm) {
             let membership = {
@@ -229,6 +240,7 @@ export default function Membership() {
                                         inputProps={{
                                             value: formValues.name,
                                             onChange: handleInputChange('name'),
+                                            onBlur: () => validateForm(),
                                         }}
                                     />
                                 </GridItem>
@@ -245,6 +257,7 @@ export default function Membership() {
                                                 'price'
                                             ),
                                             inputComponent: NumberFormatCustom,
+                                            onBlur: () => validateForm(),
                                         }}
                                     />
                                 </GridItem>
