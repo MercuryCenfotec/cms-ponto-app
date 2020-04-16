@@ -153,7 +153,7 @@ export default function Membership() {
             let membership = {
                 id: formValues.id,
                 name: formValues.name,
-                price: formValues.price,
+                price: parseInt(formValues.price),
                 benefits: membershipBenefits.map((benefit) => {
                     return benefit.name;
                 }),
