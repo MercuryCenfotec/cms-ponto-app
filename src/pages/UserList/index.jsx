@@ -83,26 +83,23 @@ export default function UserList(props) {
               </p>
             </CardHeader>
             <CardBody>
-              <GridContainer justify='flex-start'>
-                <GridItem xs={12} sm={12} md={5}>
-                  <Input
-                    placeholder='Buscar...'
-                    value={search}
-                    onChange={handleSearch()}
-                    fullWidth
-                    startAdornment={
-                      <InputAdornment position='start'>
-                        <SearchIcon />
-                      </InputAdornment>
-                    }
-                  />
-                </GridItem>
+              <GridContainer justify='flex-end'>
+                <GridItem xs={12} sm={12} md={5}></GridItem>
               </GridContainer>
               {list && (
                 <Table
                   tableHeaderColor='primary'
                   tableHead={[
-                    'Tipo de Usuario',
+                    <Input
+                      placeholder='Buscar...'
+                      value={search}
+                      onChange={handleSearch()}
+                      startAdornment={
+                        <InputAdornment position='start'>
+                          <SearchIcon />
+                        </InputAdornment>
+                      }
+                    />,
                     'Nombre',
                     'Fecha de Nacimiento',
                     'E-mail',

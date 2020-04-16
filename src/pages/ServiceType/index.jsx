@@ -335,25 +335,22 @@ export default function ServiceTypes(props) {
             </CardHeader>
             <CardBody>
               <GridContainer justify='flex-end'>
-                <GridItem xs={12} sm={12} md={5}>
-                  <Input
-                    placeholder='Buscar...'
-                    value={search}
-                    onChange={handleSearch()}
-                    fullWidth
-                    startAdornment={
-                      <InputAdornment position='start'>
-                        <SearchIcon />
-                      </InputAdornment>
-                    }
-                  />
-                </GridItem>
+                <GridItem xs={12} sm={12} md={5}></GridItem>
               </GridContainer>
               {list && (
                 <Table
                   tableHeaderColor='primary'
                   tableHead={[
-                    'Nombre',
+                    <Input
+                      placeholder='Buscar...'
+                      value={search}
+                      onChange={handleSearch()}
+                      startAdornment={
+                        <InputAdornment position='start'>
+                          <SearchIcon />
+                        </InputAdornment>
+                      }
+                    />,
 
                     <GridContainer justify='center'>
                       <GridItem justify='center'>{'Imagen'}</GridItem>
