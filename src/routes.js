@@ -19,7 +19,7 @@
 import Person from '@material-ui/icons/Person'
 import Dehaze from '@material-ui/icons/Dehaze'
 import CardMembership from '@material-ui/icons/CardMembership'
-import ServiceType from './pages/ServiceType/ServiceType'
+import ServiceType from './pages/ServiceType'
 import UserList from './pages/UserList'
 import Membership from './pages/Membership'
 
@@ -52,21 +52,6 @@ const dashboardRoutes = [
     component: Membership,
     layout: '/admin',
   },
-  // {
-  //   path: '/user',
-  //   name: 'User Profile',
-  //   icon: Person,
-  //   component: UserProfile,
-  //   layout: '/admin',
-  // },
-  // {
-  //   path: "/table",
-  //   name: "Table List",
-  //   rtlName: "قائمة الجدول",
-  //   icon: "content_paste",
-  //   component: TableList,
-  //   layout: "/admin"
-  // }
 ]
 
 export default dashboardRoutes

@@ -141,6 +141,11 @@ a {
 }
 
 .preview-image-form {
+  margin: 0.3rem 0;
+  height: 2rem;
+  filter: invert(100%);
+}
+.image-preview-container {
   height: 2rem;
 }
 

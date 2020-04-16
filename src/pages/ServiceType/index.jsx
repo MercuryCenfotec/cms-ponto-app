@@ -20,6 +20,12 @@ import Table from '../../components/Table/Table.js'
 import SearchIcon from '@material-ui/icons/Search'
 import { useState, useEffect } from 'react'
 import { useAllServiceTypes } from '../../hooks/useServiceType.js'
+import {
+  saveImageToFirebase,
+  updateToFirebase,
+  deleteImageFromFirebase,
+} from '../../services/saveToFirebase.js'
+import saveToFirebase from '../../services/saveToFirebase.js'
 
 const styles = {
   cardCategoryWhite: {
@@ -48,15 +54,19 @@ export default function ServiceTypes(props) {
   const [isReady, setIsReady] = useState(false)
   const [isImage, setIsImage] = useState(false)
   const [serviceType, setServiceType] = useState({
+    id: '',
     color: '#000',
     serviceType: '',
+    imgUrl: '',
   })
-  const [image, setImage] = useState('')
   const [list, setList] = useState([])
   const { serviceTypes, isReload } = useAllServiceTypes()
 
   const manageEdit = (id) => {
-    console.log(id)
+    setServiceType(serviceTypes[id])
+    setIsUpdating(true)
+    setIsImage(true)
+    setIsReady(true)
   }
 
   const handleSearch = () => (e) => {
@@ -76,22 +86,7 @@ export default function ServiceTypes(props) {
     }
   }
 
-  const colorOnChange = (props) => (e) => {
-    let value = e.target.value
-    switch (props) {
-      case 'color':
-        if (!value.match('#')) {
-          value = '#' + value
-        }
-        if (value.length >= 1 && value.length < 8) {
-          setServiceType({ ...serviceType, [props]: value })
-        }
-        break
-        break
-      default:
-        setServiceType({ ...serviceType, [props]: value })
-        break
-    }
+  const validateForm = () => {
     if (
       serviceType.color.length > 3 &&
       serviceType.color.length < 8 &&
@@ -104,20 +99,75 @@ export default function ServiceTypes(props) {
     }
   }
 
-  const imageOnChange = (e) => {
-    let file = new FileReader()
-    let url
-    file.onload = function () {
-      url = file.result
-      setImage(url)
+  const submitServiceType = () => {
+    if (isReady) {
+      saveToFirebase('ServiceTypes', serviceType)
+      setServiceType({
+        id: '',
+        color: '#000',
+        serviceType: '',
+        imgUrl: '',
+      })
+      isReload()
+      setIsImage(false)
+      validateForm()
     }
-    file.readAsDataURL(e.target.files[0])
+  }
+
+  const submitEdit = () => {
+    if (isReady) {
+      updateToFirebase('ServiceTypes', serviceType)
+      cleanForm()
+      isReload()
+      setIsUpdating(false)
+      setIsImage(false)
+      validateForm()
+    }
+  }
+  const colorOnChange = (props) => (e) => {
+    let value = e.target.value
+    switch (props) {
+      case 'color':
+        if (!value.match('#')) {
+          value = '#' + value
+        }
+        if (value.length >= 1 && value.length < 8) {
+          setServiceType({ ...serviceType, [props]: value.toUpperCase() })
+        }
+        break
+      default:
+        setServiceType({ ...serviceType, [props]: value })
+        break
+    }
+    validateForm()
+  }
+
+  const cleanForm = () => {
+    setServiceType({
+      id: '',
+      color: '#000',
+      serviceType: '',
+      imgUrl: '',
+    })
+  }
+
+  const setImage = (url) => {
+    setServiceType({ ...serviceType, imgUrl: url })
+    setIsImage(true)
+  }
+
+  const imageOnChange = (e) => {
+    let file = e.target.files[0]
+    if (serviceType.imgUrl) {
+      deleteImageFromFirebase(serviceType.imgUrl)
+    }
+    saveImageToFirebase('/icons', file, setImage)
   }
 
   useEffect(() => {
     let newList = []
 
-    newList = serviceTypes.map((value) => {
+    newList = serviceTypes.map((value, index) => {
       return [
         value.serviceType,
 
@@ -143,7 +193,7 @@ export default function ServiceTypes(props) {
         <IconButton
           color='primary'
           aria-label='add to shopping cart'
-          onClick={() => manageEdit(value.id)}
+          onClick={() => manageEdit(index)}
         >
           <Create />
         </IconButton>,
@@ -202,7 +252,6 @@ export default function ServiceTypes(props) {
                     id='contained-button-file'
                     type='file'
                     hidden
-                    value={image}
                     onChange={imageOnChange}
                   />
                   <label htmlFor='contained-button-file'>
@@ -215,7 +264,7 @@ export default function ServiceTypes(props) {
                     </Button>
                   </label>
                 </GridItem>
-                <GridItem xs={12} sm={12} md={4}>
+                <GridItem xs={12} sm={12} md={2}>
                   <InputLabel style={{ color: '#AAAAAA' }}>
                     Vista Previa
                   </InputLabel>
@@ -227,21 +276,52 @@ export default function ServiceTypes(props) {
                       border: '2px solid #000',
                     }}
                   >
-                    <img src={image} className='preview-image-form' />_
+                    <GridContainer alignItems='center' justify='center'>
+                      <img
+                        src={
+                          serviceType.imgUrl
+                            ? serviceType.imgUrl
+                            : 'https://firebasestorage.googleapis.com/v0/b/ponto-5c572.appspot.com/o/icons%2Fgrimace-solid.png?alt=media&token=2ad1759f-26cb-463e-8475-df2966ce4fc4'
+                        }
+                        className='preview-image-form'
+                        alt='preview'
+                      />
+                    </GridContainer>
                   </GridItem>
                 </GridItem>
               </GridContainer>
             </CardBody>
             <CardFooter>
-              <GridItem xs={1} sm={1} md={1}>
-                <Button
-                  disabled={!isReady}
-                  color='primary'
-                  // onClick={}
-                >
-                  Confirmar
-                </Button>
-              </GridItem>
+              {!isUpdating ? (
+                <GridItem xs={1} sm={1} md={1}>
+                  <Button
+                    disabled={!isReady}
+                    color='primary'
+                    onClick={() => submitServiceType()}
+                  >
+                    Confirmar
+                  </Button>
+                </GridItem>
+              ) : (
+                <GridItem xs={12} sm={12} md={12}>
+                  <Button
+                    disabled={!isReady}
+                    color='primary'
+                    onClick={() => submitEdit()}
+                  >
+                    Actualizar
+                  </Button>
+                  <Button
+                    color='secondary'
+                    onClick={() => {
+                      setIsUpdating(false)
+                      cleanForm()
+                    }}
+                  >
+                    Cancelar
+                  </Button>
+                </GridItem>
+              )}
             </CardFooter>
           </Card>
         </GridItem>
@@ -254,7 +334,7 @@ export default function ServiceTypes(props) {
               </p>
             </CardHeader>
             <CardBody>
-              <GridContainer justify='flex-start'>
+              <GridContainer justify='flex-end'>
                 <GridItem xs={12} sm={12} md={5}>
                   <Input
                     placeholder='Buscar...'

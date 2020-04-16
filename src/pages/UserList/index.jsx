@@ -57,7 +57,7 @@ export default function UserList(props) {
     console.log(users)
     newList = users.map((value) => {
       return [
-        value.userType == 1 ? 'Solicitante' : 'Oferente',
+        value.userType === 1 ? 'Solicitante' : 'Oferente',
         value.fullName,
         value.birthDate,
         value.email,
