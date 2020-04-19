@@ -33,6 +33,10 @@ const styles = {
     },
     image: {
         width: '100%',
+        maxHeight: '350px',
+        objectFit: 'cover',
+        padding: '1rem',
+        borderRadius: '2px',
     },
     cancelButton: {
         marginLeft: '16px',
@@ -52,7 +56,7 @@ const styles = {
         borderBottom: '1px solid #9C34B3',
     },
     spacer: {
-        marginTop: '3rem',
+        marginTop: '1rem',
     },
 };
 const useStyles = makeStyles(styles);
@@ -89,7 +93,7 @@ export default function IdentityVerification() {
 
     const handleVerify = (isVerified) => {
         if (isVerified) {
-            db.ref('Users').child(request.userId).update({ isVerified: true });
+            db.ref('Users').child(request.userId).update({ verified: true });
         } else {
             db.ref('Users').child(request.userId).remove();
         }
@@ -156,73 +160,31 @@ export default function IdentityVerification() {
                                                 request.userIdNumber}
                                         </h3>
                                         <GridContainer justify='center'>
-                                            <GridItem xs={11}>
-                                                <GridContainer>
-                                                    <GridItem xs={12}>
-                                                        <h5
-                                                            className={
-                                                                classes.imageTitle +
-                                                                ' ' +
-                                                                classes.headerDivider
-                                                            }
-                                                        >
-                                                            Cédula de identidad
-                                                        </h5>
-                                                    </GridItem>
-                                                    <GridItem xs={12} md={6}>
-                                                        <img
-                                                            className={
-                                                                classes.image
-                                                            }
-                                                            src={
-                                                                request.idFrontImage
-                                                            }
-                                                            alt='Imágen frontal de la cedula'
-                                                        />
-                                                    </GridItem>
-                                                    <GridItem xs={12} md={6}>
-                                                        <img
-                                                            className={
-                                                                classes.image
-                                                            }
-                                                            src={
-                                                                request.idBackImage
-                                                            }
-                                                            alt='Imágen trasera de la cedula'
-                                                        />
-                                                    </GridItem>
-                                                </GridContainer>
-                                            </GridItem>
                                             <GridItem
                                                 xs={11}
                                                 className={classes.spacer}
                                             >
                                                 <GridContainer justify='center'>
-                                                    <GridItem xs={12}>
-                                                        <h5
-                                                            className={
-                                                                classes.imageTitle +
-                                                                ' ' +
-                                                                classes.headerDivider +
-                                                                ' ' +
-                                                                classes.spacer
-                                                            }
-                                                        >
-                                                            Imágen reciente del
-                                                            usuario
-                                                        </h5>
-                                                    </GridItem>
-                                                    <GridItem xs={12} md={5}>
-                                                        <img
-                                                            className={
-                                                                classes.image
-                                                            }
-                                                            src={
-                                                                request.recentUserImage
-                                                            }
-                                                            alt='Imágen reciente del usuario'
-                                                        />
-                                                    </GridItem>
+                                                    {request.files.map(
+                                                        (imageUri) => (
+                                                            <GridItem
+                                                                xs={12}
+                                                                md={6}
+                                                            >
+                                                                <img
+                                                                    className={
+                                                                        classes.image +
+                                                                        ' ' +
+                                                                        classes.spacer
+                                                                    }
+                                                                    src={
+                                                                        imageUri
+                                                                    }
+                                                                    alt='Imágen reciente del usuario'
+                                                                />
+                                                            </GridItem>
+                                                        )
+                                                    )}
                                                 </GridContainer>
                                             </GridItem>
                                             <GridItem
