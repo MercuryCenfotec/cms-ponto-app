@@ -136,12 +136,16 @@ a {
   color: #9c27b0;
   text-decoration: none;
 }
-
 .preview-image {
   height: 2rem;
 }
 
 .preview-image-form {
+  margin: 0.3rem 0;
+  height: 2rem;
+  filter: invert(100%);
+}
+.image-preview-container {
   height: 2rem;
 }
 
