@@ -11,7 +11,6 @@ import IconButton from '@material-ui/core/IconButton';
 import VerifiedUser from '@material-ui/icons/VerifiedUser';
 import Table from '../../components/Table/Table.js';
 import usePendingIDVerifications from '../../hooks/usePendingIDVerifications';
-import useUserById from '../../hooks/useUserById';
 import { db } from '../../services/firebase';
 
 const styles = {
